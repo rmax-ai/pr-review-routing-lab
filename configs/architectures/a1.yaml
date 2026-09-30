@@ -1,0 +1,6 @@
+id: A1
+name: deterministic gates, every passing case to Sol, then policy
+steps:
+  - {kind: deterministic_gates}
+  - {kind: reviewer}
+  - {kind: policy_escalation}

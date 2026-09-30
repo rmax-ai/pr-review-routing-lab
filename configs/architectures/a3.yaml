@@ -1,0 +1,8 @@
+id: A3
+name: deterministic gates, every passing case to Sol, Gate B
+steps:
+  - {kind: deterministic_gates}
+  - {kind: reviewer}
+  - {kind: jev_gate, params: {gate: gate_b}}
+  - {kind: remediate}
+  - {kind: human}

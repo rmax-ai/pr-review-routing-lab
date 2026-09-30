@@ -1,0 +1,19 @@
+name: public-mock-replay
+cases: cases/public
+gold: gold
+architectures:
+  - A0
+  - A1
+  - A2
+  - A3
+  - A4
+  - A5
+  - dual
+split: all
+backend: mock
+concurrency: 2
+claims:
+  - mechanics demonstration only
+  - no model-quality claim
+  - no calibration-quality claim
+  - no cost-savings claim

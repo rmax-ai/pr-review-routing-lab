@@ -1,0 +1,8 @@
+id: gate_b
+instructions: "Answer each narrow boolean independently. Thresholds are owned by policy, not by this text."
+questions:
+  - {id: requires_new_architecture_product_or_policy_decision, type: boolean}
+  - {id: blocker_materially_uncertain, type: boolean}
+  - {id: remediation_expands_or_reinterprets_scope, type: boolean}
+  - {id: unresolved_requirement_conflict, type: boolean}
+  - {id: evidence_insufficient_for_claimed_outcome, type: boolean}

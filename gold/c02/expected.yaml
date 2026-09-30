@@ -1,0 +1,13 @@
+case_id: c02
+expected_findings:
+- severity: blocker
+  defect_class: completion_state
+  requirement_refs:
+  - R1
+  match:
+    requirement_any:
+    - R1
+human_required: true
+verdict_expectation: changes_required
+labeled_by: operator
+notes: Reconstructed public toy case; labels are protocol fixtures.

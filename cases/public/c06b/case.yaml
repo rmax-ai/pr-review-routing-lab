@@ -1,0 +1,13 @@
+id: c06b
+title: Fixed linked head restores recovery
+base_ref: repo
+patch_ref: change.patch
+requirements_ref: requirements.yaml
+contracts_ref: contracts.md
+author_lane: codex
+risk: medium
+provenance: synthetic_reconstructed
+sanitization_note: Reconstructed toy contract; no private data.
+workstream_subject: routing-lab
+expected_head_digest: 1944acb4b78b181d5df1af064c3f705e42522e7413570513ce20014e3d4067ee
+expected_case_digest: fb668eb5b85739dcfaf861ea22d97a49b370c0844ec36fcb8168281a1ed28297

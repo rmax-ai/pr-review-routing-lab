@@ -1,0 +1,16 @@
+id: c07
+title: Authorization boundary change needs review
+base_ref: repo
+patch_ref: change.patch
+requirements_ref: requirements.yaml
+contracts_ref: contracts.md
+author_lane: droid
+risk: high
+provenance: synthetic_reconstructed
+sanitization_note: Reconstructed toy contract; no private data.
+workstream_subject: routing-lab
+expected_head_digest: e7952d05e71021a53aef2a43f40665f9593552f5afcb18301d6ef05bcedab985
+security_boundary_patterns:
+- auth
+- permission
+expected_case_digest: afb3ac5dd6f6aff8ca4505b3fff92493a47405cc71061a6f65ac44198b2b92ae

@@ -1,0 +1,7 @@
+requirements:
+- id: R1
+  text: Required implementation surface is missing.
+  source: issue
+  mandatory: true
+  expects_marker: true
+  surface: src/feature.py

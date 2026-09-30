@@ -1,0 +1,6 @@
+requirements:
+- id: R1
+  text: High-risk lifecycle change uses dual review.
+  source: issue
+  mandatory: true
+  expects_marker: false

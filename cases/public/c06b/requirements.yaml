@@ -1,0 +1,6 @@
+requirements:
+- id: R1
+  text: Fixed linked head restores recovery.
+  source: issue
+  mandatory: true
+  expects_marker: false

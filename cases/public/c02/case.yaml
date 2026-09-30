@@ -1,0 +1,13 @@
+id: c02
+title: Verified evidence still contains an open item
+base_ref: repo
+patch_ref: change.patch
+requirements_ref: requirements.yaml
+contracts_ref: contracts.md
+author_lane: human
+risk: medium
+provenance: synthetic_reconstructed
+sanitization_note: Reconstructed toy contract; no private data.
+workstream_subject: routing-lab
+expected_head_digest: ae8ad3374f438d02e975cc96d07f17fbd640a7edb7ab5c3ea7d0731b2ac240e4
+expected_case_digest: f843bbc887eef9d00db4bf707e25f7dfda2e2e0a869f238536838a42ee79ab21

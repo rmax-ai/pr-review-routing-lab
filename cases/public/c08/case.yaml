@@ -1,0 +1,13 @@
+id: c08
+title: Documentation-only negative control
+base_ref: repo
+patch_ref: change.patch
+requirements_ref: requirements.yaml
+contracts_ref: contracts.md
+author_lane: human
+risk: low
+provenance: synthetic_reconstructed
+sanitization_note: Reconstructed toy contract; no private data.
+workstream_subject: routing-lab
+expected_head_digest: 82edce54badf8462d4d276588b8635fdeeca00324ef3ccc37b1806a8f0575683
+expected_case_digest: 3116e95fe632f2b267db6c65f09bde43a8ccdcf69593a992bc149c359c53130c

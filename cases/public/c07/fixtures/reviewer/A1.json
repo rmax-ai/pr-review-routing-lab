@@ -1,0 +1,1 @@
+{"findings": [{"confidence": 0.95, "defect_class": "security_boundary", "evidence": "security_boundary fixture finding", "id": "F1", "requirement_refs": ["R1"], "severity": "blocker"}], "requirement_coverage": [{"note": "fixture label", "requirement_id": "R1", "status": "missed"}], "verdict": "human_decision"}

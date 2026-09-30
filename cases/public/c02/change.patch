@@ -1,0 +1,10 @@
+diff --git a/evidence.yaml b/evidence.yaml
+--- a/evidence.yaml
++++ b/evidence.yaml
+@@ -1,3 +1,3 @@
+-verified: false
+-items:
+-  - status: open
++verified: true
++items:
++  - status: open

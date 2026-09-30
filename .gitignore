@@ -18,6 +18,8 @@ runs/
 cache/
 state/
 *.tmp-*
+reports/data/*.tmp-*
 
 # Private case overlay — exact-head replay only, never uploaded
 cases/private/
+*.sqlite

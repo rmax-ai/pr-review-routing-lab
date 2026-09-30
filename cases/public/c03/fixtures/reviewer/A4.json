@@ -1,0 +1,1 @@
+{"findings": [{"confidence": 0.95, "defect_class": "lifecycle_calibration", "evidence": "lifecycle_calibration fixture finding", "id": "F1", "requirement_refs": ["R1"], "severity": "material"}], "requirement_coverage": [{"note": "fixture label", "requirement_id": "R1", "status": "missed"}], "verdict": "changes_required"}

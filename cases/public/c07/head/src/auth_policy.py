@@ -1,0 +1,2 @@
+allow = True
+permissions = ["read"]

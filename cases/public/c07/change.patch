@@ -1,0 +1,7 @@
+diff --git a/src/auth_policy.py b/src/auth_policy.py
+--- a/src/auth_policy.py
++++ b/src/auth_policy.py
+@@ -1,1 +1,2 @@
+-allow = True
++allow = True
++permissions = ["read"]
