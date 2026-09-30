@@ -59,3 +59,12 @@ records, answer validation, and independent packet digests.
 The next live step is shadow-mode collection with a pinned CLI, measured usage,
 operator labels, and artifact-backed adjudication. It must not be presented as
 an outcome of the mock protocol.
+
+Rate metrics persist integer numerator and denominator counts as flat
+`<metric_id>_numerator` and `<metric_id>_denominator` artifact fields and
+aggregate those counts across rows. A zero-denominator row persists `0, 0`
+without contributing a vacuous rate. Usage metrics report component
+completeness and explicit partial reasons; a missing measured component never
+becomes a zero-cost observation. Resume keys include the complete effective
+runner configuration. Live Jev envelopes must echo the case, head, and packet
+identity triplet; simulated fixtures may omit those runtime identity fields.

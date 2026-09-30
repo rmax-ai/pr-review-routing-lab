@@ -88,27 +88,45 @@ def test_unavailable_usage_is_not_reported_as_zero():
 
     assert metrics["tokens_simulated"]["value"] is None
     assert metrics["cost_per_pr_simulated"]["value"] is None
+    assert metrics["tokens_simulated"]["unavailable_reason"] == "no_available_usage"
+    assert metrics["cost_per_pr_simulated"]["unavailable_reason"] == "no_available_usage"
 
 
 def test_score_metrics_are_partitioned_by_source_and_missing_source_is_none():
     base = {
         "material_recall_including_blocker": 0.5,
+        "material_recall_including_blocker_numerator": 1,
+        "material_recall_including_blocker_denominator": 2,
         "material_recall_only": 0.0,
+        "material_recall_only_numerator": 0,
+        "material_recall_only_denominator": 1,
         "requirement_coverage_recall": 1.0,
+        "requirement_coverage_recall_numerator": 1,
+        "requirement_coverage_recall_denominator": 1,
         "required_but_unmentioned": 2,
         "spurious_blocker_rate": 0.0,
+        "spurious_blocker_rate_numerator": 0,
+        "spurious_blocker_rate_denominator": 1,
         "severity_exactness_rate": 1.0,
+        "severity_exactness_rate_numerator": 1,
+        "severity_exactness_rate_denominator": 1,
         "overcall_rate": 0.0,
+        "overcall_rate_numerator": 0,
+        "overcall_rate_denominator": 1,
     }
     rows = [
         {
             "source": "measured",
             "blocker_recall": 0.0,
+            "blocker_recall_numerator": 0,
+            "blocker_recall_denominator": 1,
             **base,
         },
         {
             "source": "simulated",
             "blocker_recall": 1.0,
+            "blocker_recall_numerator": 1,
+            "blocker_recall_denominator": 1,
             **base,
         }
     ]
@@ -117,6 +135,11 @@ def test_score_metrics_are_partitioned_by_source_and_missing_source_is_none():
 
     assert metrics["blocker_recall"]["value"] == 0.0
     assert metrics["blocker_recall_simulated"]["value"] == 1.0
+    assert metrics["blocker_recall"]["population"] == "expected_blockers"
+    assert metrics["blocker_recall"]["numerator"] == "matched_blockers"
+    assert metrics["blocker_recall"]["denominator"] == "expected_blockers"
+    assert metrics["blocker_recall"]["numerator_value"] == 0
+    assert metrics["blocker_recall"]["denominator_value"] == 1
     assert metrics["required_but_unmentioned"]["value"] == 2
     assert metrics["required_but_unmentioned_simulated"]["value"] == 2
 
@@ -161,6 +184,52 @@ def test_token_and_cost_availability_boundaries():
     assert partial_metrics["tokens"]["value"] is None
     assert partial_metrics["tokens"]["unavailable_reason"] == "incomplete_token_usage"
     assert partial_metrics["cost_per_pr"]["value"] == 0.001
+
+    partial_components = record(
+        UsageCost(
+            input_tokens=10,
+            output_tokens=5,
+            source=DataSource.measured,
+            component="jev",
+            usd="0.001",
+        ),
+        UsageCost(
+            source=DataSource.measured,
+            component="sol_review",
+            usage_source="unavailable",
+        ),
+    )
+    partial_component_metrics = {
+        item["id"]: item for item in benchmark_metrics([partial_components])
+    }
+    for metric_id in ("tokens", "cost_per_pr"):
+        assert partial_component_metrics[metric_id]["value"] is None
+        assert (
+            partial_component_metrics[metric_id]["unavailable_reason"]
+            == "partial_usage_components:1"
+        )
+
+    fully_available = record(
+        UsageCost(
+            input_tokens=10,
+            output_tokens=5,
+            source=DataSource.measured,
+            component="jev",
+            usd="0.001",
+        ),
+        UsageCost(
+            input_tokens=20,
+            output_tokens=10,
+            source=DataSource.measured,
+            component="sol_review",
+            usd="0.002",
+        ),
+    )
+    fully_available_metrics = {
+        item["id"]: item for item in benchmark_metrics([fully_available])
+    }
+    assert fully_available_metrics["tokens"]["value"] == 45
+    assert fully_available_metrics["cost_per_pr"]["value"] == 0.003
 
     unpriced = record(
         UsageCost(

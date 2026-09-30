@@ -71,24 +71,32 @@ def _run_seed(
     effort: str,
     gate_a_questions: dict[str, Any] | None = None,
     gate_b_questions: dict[str, Any] | None = None,
+    config_digest: str | None = None,
 ) -> str:
-    """Build a stable identity from every input that can affect a run."""
+    """Build a stable identity from the complete run configuration.
 
-    if gate_a_questions is None and gate_b_questions is None:
-        # Preserve the W1a identity for the default experiment command so
-        # existing completed records remain resumable.
-        return (
-            f"{case_digest(case)}:{architecture}:{backend}:{model}:{effort}:"
-            f"{case.linked_case_id or ''}"
+    A resume key must never identify two runs that differ only in an
+    operational setting such as model or effort.  ``config_digest`` is passed
+    by ``Runner`` after it has folded in the policy, pricing, question, and
+    harness configuration.
+    """
+
+    if config_digest is None:
+        config_digest = digest_obj(
+            {
+                "architecture": architecture,
+                "backend": backend,
+                "model": model,
+                "effort": effort,
+                "gate_a_questions": gate_a_questions,
+                "gate_b_questions": gate_b_questions,
+            }
         )
     return digest_obj(
         {
             "case": case_digest(case),
-            "architecture": architecture,
-            "backend": backend,
-            "model": model,
-            "effort": effort,
             "linked_case_id": case.linked_case_id or "",
+            "config_digest": config_digest,
             "gate_a_questions": gate_a_questions,
             "gate_b_questions": gate_b_questions,
         }
@@ -389,13 +397,25 @@ class Runner:
             "usage": {},
         }
 
-    def _config_digest(self, architecture: str) -> str:
+    def _config_digest(
+        self,
+        architecture: str,
+        *,
+        gate_a_questions: dict[str, Any] | None = None,
+        gate_b_questions: dict[str, Any] | None = None,
+    ) -> str:
+        """Digest every semantic and operational input used by this runner."""
+
         return digest_obj(
             {
                 "architecture": architecture,
+                "backend": self.backend,
                 "policy_version": POLICY_VERSION,
                 "model": self.model,
                 "effort": self.effort,
+                "harness": type(self.harness).__name__,
+                "prompt_template_digest": PROMPT_TEMPLATE_DIGEST,
+                "jev_fixture_version": "mock-v1" if self.backend == "mock" else "live",
                 "thresholds": DEFAULT_THRESHOLDS,
                 "gate_a_hard_ids": sorted(GATE_A_HARD_IDS),
                 "pricing": {
@@ -407,6 +427,10 @@ class Runner:
                 "questions": {
                     "gate_a": sorted(CANONICAL_QUESTION_IDS["gate_a"]),
                     "gate_b": sorted(CANONICAL_QUESTION_IDS["gate_b"]),
+                },
+                "question_overrides": {
+                    "gate_a": gate_a_questions,
+                    "gate_b": gate_b_questions,
                 },
             }
         )
@@ -603,6 +627,11 @@ class Runner:
         if case.provenance == "private_replay" and is_path_under(self.output_dir, Path.cwd()):
             raise PrivateOverlayError("private outputs must be outside checkout")
         cdigest = case_digest(case)
+        config = self._config_digest(
+            architecture,
+            gate_a_questions=gate_a_questions,
+            gate_b_questions=gate_b_questions,
+        )
         run_id = run_id or str(
             uuid5(
                 NAMESPACE_URL,
@@ -614,6 +643,7 @@ class Runner:
                     self.effort,
                     gate_a_questions,
                     gate_b_questions,
+                    config,
                 ),
             )
         )
@@ -650,7 +680,6 @@ class Runner:
             if evidence_binding_digest is None:
                 raise ValueError("deterministic evidence is missing evidence_binding")
             det = deterministic_policy(evidence)
-            config = self._config_digest(architecture)
             if det.route == Route.deterministic_reject:
                 return self._record(
                     run_id,
@@ -1149,7 +1178,7 @@ class Runner:
                 head,
                 sol_invoked,
                 0,
-                self._config_digest(architecture),
+                config,
                 invocations,
                 error="runner_error",
             )
@@ -1240,29 +1269,25 @@ class Runner:
         ]
         self.output_dir.mkdir(parents=True, exist_ok=True)
         existing = self._load_persisted_records()
-        existing_ids = {record.run_id for record in existing}
-        existing_jobs = {
-            (record.case_digest, record.architecture, record.backend) for record in existing
+        existing_identities = {
+            (
+                record.case_digest,
+                record.architecture,
+                record.backend,
+                record.config_digest,
+            )
+            for record in existing
         }
         pending_jobs = [
             (case, architecture)
             for case, architecture in jobs
             if (
-                str(
-                    uuid5(
-                        NAMESPACE_URL,
-                        _run_seed(
-                            case,
-                            architecture,
-                            self.backend,
-                            self.model,
-                            self.effort,
-                        ),
-                    )
-                )
-                not in existing_ids
-                and (case_digest(case), architecture, self.backend) not in existing_jobs
+                case_digest(case),
+                architecture,
+                self.backend,
+                self._config_digest(architecture),
             )
+            not in existing_identities
         ]
 
         failures: list[BaseException] = []

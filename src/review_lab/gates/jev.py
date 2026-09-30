@@ -133,7 +133,12 @@ class JevAdapter:
             for key in ("case_digest", "head_digest", "packet_digest"):
                 if key in state:
                     envelope[key] = state[key]
-        result = self._validate_envelope(envelope, expected, DataSource.simulated, started, state)
+        # Mock fixtures intentionally remain lightweight and may omit the
+        # runtime identity triplet.  Their answers are still schema checked,
+        # but fixture identity is not treated as a live attestation.
+        result = self._validate_envelope(
+            envelope, expected, DataSource.simulated, started, state
+        )
         return JevResult(
             result.answers,
             result.usage,
@@ -257,6 +262,7 @@ class JevAdapter:
         started: float,
         identity: dict[str, Any] | None = None,
     ) -> JevResult:
+        strict_identity = source == DataSource.measured
         if not isinstance(envelope, dict) or envelope.get("ok") is not True:
             return JevResult([], None, _elapsed(started), "jev_schema_invalid")
         allowed_envelope = {
@@ -272,8 +278,35 @@ class JevAdapter:
             return JevResult([], None, _elapsed(started), "jev_schema_invalid")
         if "fixture_version" in envelope and not isinstance(envelope["fixture_version"], str):
             return JevResult([], None, _elapsed(started), "jev_schema_invalid")
-        for key in ("case_digest", "head_digest", "packet_digest"):
-            if identity and key in envelope and envelope[key] != identity.get(key):
+        identity_keys = ("case_digest", "head_digest", "packet_digest")
+        if strict_identity:
+            # A live response is accepted only when all three values are
+            # present both in the request state and in the provider envelope.
+            # Missing and mismatched values intentionally share the stable
+            # audit error; provider text must not become a machine contract.
+            if not isinstance(identity, dict) or any(
+                not isinstance(identity.get(key), str) for key in identity_keys
+            ):
+                return JevResult([], None, _elapsed(started), "jev_audit_partial")
+            if any(
+                not isinstance(envelope.get(key), str)
+                or envelope.get(key) != identity.get(key)
+                for key in identity_keys
+            ):
+                return JevResult([], None, _elapsed(started), "jev_audit_partial")
+        else:
+            # Simulated fixtures may omit identity, but a value they do
+            # provide must still agree with the available request identity.
+            # This preserves fixture compatibility without making an explicit
+            # mismatch silently acceptable.
+            if isinstance(identity, dict) and any(
+                key in envelope
+                and (
+                    not isinstance(identity.get(key), str)
+                    or envelope.get(key) != identity.get(key)
+                )
+                for key in identity_keys
+            ):
                 return JevResult([], None, _elapsed(started), "jev_audit_partial")
         raw_answers = envelope.get("answers")
         if not isinstance(raw_answers, list):

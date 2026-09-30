@@ -40,6 +40,11 @@ class Score:
     matched_expected_indices: tuple[int, ...] = ()
     expected_by_severity: Mapping[str, int] = field(default_factory=dict)
     matched_by_severity: Mapping[str, int] = field(default_factory=dict)
+    # These flat counts are retained alongside the rates.  Aggregating the
+    # rates themselves (for example by taking their mean) gives the wrong
+    # answer when cases have different numbers of findings.
+    expected_requirement_count: int = 0
+    covered_requirement_count: int = 0
 
     @property
     def recall(self) -> float:
@@ -268,6 +273,9 @@ def score_findings(findings: Iterable[Finding], gold: GoldCase) -> Score:
     matched_by_severity = Counter(
         gold.expected_findings[ei].severity.value for _, _, ei, _ in matches
     )
+    targets = {
+        ref for expected in gold.expected_findings for ref in expected.requirement_refs
+    }
     return Score(
         exact_matches=len(matches),
         misses=len(gold.expected_findings) - len(matched_expected),
@@ -290,6 +298,8 @@ def score_findings(findings: Iterable[Finding], gold: GoldCase) -> Score:
         matched_expected_indices=tuple(sorted(matched_expected)),
         expected_by_severity=dict(sorted(expected_by_severity.items())),
         matched_by_severity=dict(sorted(matched_by_severity.items())),
+        expected_requirement_count=len(targets),
+        covered_requirement_count=len(_coverage_from_findings(produced, gold, matches)[1]),
     )
 
 
@@ -314,6 +324,7 @@ def score_verdict(verdict: Any, gold: GoldCase) -> Score:
             **score.__dict__,
             "requirement_coverage_recall": finding_coverage,
             "claimed_addressed_recall": claimed_recall,
+            "covered_requirement_count": len(covered),
         }
     )
 
@@ -353,21 +364,53 @@ def required_but_unmentioned(
 
 
 def score_metrics(score: Score) -> dict[str, float | int | None]:
+    expected_blockers = score.expected_by_severity.get(Severity.blocker.value, 0)
+    expected_material = score.expected_by_severity.get(Severity.material.value, 0)
+    matched_blockers = score.matched_by_severity.get(Severity.blocker.value, 0)
+    matched_material = score.matched_by_severity.get(Severity.material.value, 0)
+    matched_material_and_blocker = matched_blockers + matched_material
+    matched_findings = len(score.audits)
+    produced = score.produced_count
+    exact = sum(audit.taxonomy == "exact" for audit in score.audits)
+    def rate(numerator: int, denominator: int) -> float | None:
+        return numerator / denominator if denominator else None
+
+    # Keep the old rate keys for callers, but also publish the numerator and
+    # denominator as flat fields.  The report builder can then sum counts
+    # across rows instead of averaging per-row rates.
     return {
-        "blocker_recall": score.blocker_recall,
-        "material_recall_including_blocker": score.material_recall_including_blocker,
-        "material_recall_only": score.material_recall_only,
-        "requirement_coverage_recall": score.requirement_coverage_recall,
+        "blocker_recall": rate(matched_blockers, expected_blockers),
+        "blocker_recall_numerator": matched_blockers,
+        "blocker_recall_denominator": expected_blockers,
+        "material_recall_including_blocker": rate(
+            matched_material_and_blocker, expected_blockers + expected_material
+        ),
+        "material_recall_including_blocker_numerator": matched_material_and_blocker,
+        "material_recall_including_blocker_denominator": expected_blockers + expected_material,
+        "material_recall_only": rate(matched_material, expected_material),
+        "material_recall_only_numerator": matched_material,
+        "material_recall_only_denominator": expected_material,
+        "requirement_coverage_recall": rate(
+            score.covered_requirement_count, score.expected_requirement_count
+        ),
+        "requirement_coverage_recall_numerator": score.covered_requirement_count,
+        "requirement_coverage_recall_denominator": score.expected_requirement_count,
         "claimed_addressed_recall": score.claimed_addressed_recall,
         "spurious_blocker_rate": (
-            score.spurious_blockers / score.produced_count if score.produced_count else None
+            score.spurious_blockers / produced if produced else None
         ),
-        "severity_exactness_rate": score.severity_exactness_rate,
+        "spurious_blocker_rate_numerator": score.spurious_blockers,
+        "spurious_blocker_rate_denominator": produced,
+        "severity_exactness_rate": rate(exact, matched_findings),
+        "severity_exactness_rate_numerator": exact,
+        "severity_exactness_rate_denominator": matched_findings,
         "overcall_rate": (
-            (score.spurious_blockers + score.advisory_noise) / score.produced_count
-            if score.produced_count
+            (score.spurious_blockers + score.advisory_noise) / produced
+            if produced
             else None
         ),
+        "overcall_rate_numerator": score.spurious_blockers + score.advisory_noise,
+        "overcall_rate_denominator": produced,
         "exact_matches": score.exact_matches,
         "misses": score.misses,
     }

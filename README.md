@@ -47,6 +47,14 @@ The default mock path is offline; decisions and digests are deterministic.
 Set `REVIEW_LAB_NOW` when byte-identical fresh traces are required.
 `UV_OFFLINE=1 uv sync --frozen` is suitable for an already warmed cache.
 
+Metric rates are aggregated from persisted integer fields named
+`<metric_id>_numerator` and `<metric_id>_denominator`, rather than averaging
+per-case rates. A zero-denominator row persists `0, 0` and contributes no rate.
+Usage and cost metrics keep measured and simulated components separate;
+incomplete components publish an explicit partial-usage reason instead of a
+fabricated zero. Resume identity includes the full runner configuration,
+including model and effort.
+
 ## Mock and live boundaries
 
 Mock Jev envelopes and reviewer fixtures are simulated mechanics drivers. They
