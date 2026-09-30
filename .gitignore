@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Environments / build
+.venv/
+dist/
+build/
+
+# Tool caches
+.pytest_cache/
+.ruff_cache/
+
+# Round working dirs (never commit)
+.staging/
+runs/
+cache/
+state/
+*.tmp-*
+
+# Private case overlay — exact-head replay only, never uploaded
+cases/private/
