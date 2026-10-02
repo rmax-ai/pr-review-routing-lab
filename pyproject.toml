@@ -1,0 +1,33 @@
+[project]
+name = "review-lab"
+version = "0.1.0"
+description = "Experimental benchmark of automated PR review routing architectures (deterministic gates x Jev x Sol review x escalation)"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pydantic>=2.13.5",
+    "pyyaml>=6.0.3",
+]
+
+[project.scripts]
+review-lab = "review_lab.cli:main"
+
+[build-system]
+requires = ["uv_build>=0.12.16,<0.13.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "ruff>=0.16.9",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+# Case repo/head trees are third-party code SNAPSHOTS shipped as benchmark DATA (some intentionally
+# defective, e.g. c06a/b bare returns) — they are validated by the corpus validator, not linted.
+extend-exclude = ["cases/public/*/repo", "cases/public/*/head"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

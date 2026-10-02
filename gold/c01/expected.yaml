@@ -1,0 +1,6 @@
+case_id: c01
+expected_findings: []
+human_required: false
+verdict_expectation: accept
+labeled_by: operator
+notes: Reconstructed public toy case; labels are protocol fixtures.

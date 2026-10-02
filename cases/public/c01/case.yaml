@@ -1,0 +1,13 @@
+id: c01
+title: Evidence binding stays aligned
+base_ref: repo
+patch_ref: change.patch
+requirements_ref: requirements.yaml
+contracts_ref: contracts.md
+author_lane: codex
+risk: low
+provenance: synthetic_reconstructed
+sanitization_note: Reconstructed toy contract; no private data.
+workstream_subject: routing-lab
+expected_head_digest: 72bd62429e5cb3a64f0d9b0fe5ca65b059581d03b457c9a8a4301897b56457f6
+expected_case_digest: 37136676bbeb097a841a427bd511c73ccac7aa8e827ce801095541a266eb94ea

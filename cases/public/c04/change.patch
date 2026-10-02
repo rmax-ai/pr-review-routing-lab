@@ -1,0 +1,8 @@
+diff --git a/retention.yaml b/retention.yaml
+--- a/retention.yaml
++++ b/retention.yaml
+@@ -1,2 +1,2 @@
+-max_entries: 3
+-entries: [a, b]
++max_entries: 1
++entries: [a, b]

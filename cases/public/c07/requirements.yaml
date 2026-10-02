@@ -1,0 +1,6 @@
+requirements:
+- id: R1
+  text: Authorization boundary change needs review.
+  source: issue
+  mandatory: true
+  expects_marker: false

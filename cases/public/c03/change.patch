@@ -1,0 +1,8 @@
+diff --git a/calibration.yaml b/calibration.yaml
+--- a/calibration.yaml
++++ b/calibration.yaml
+@@ -1,2 +1,2 @@
+-mode: baseline
+-reset_marker: v1
++mode: strict
++reset_marker: v1

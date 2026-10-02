@@ -1,0 +1,6 @@
+diff --git a/src/other.py b/src/other.py
+--- a/src/other.py
++++ b/src/other.py
+@@ -1,1 +1,1 @@
+-return_value = 1
++return_value = 2

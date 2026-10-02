@@ -1,0 +1,13 @@
+id: c09
+title: High-risk lifecycle change uses dual review
+base_ref: repo
+patch_ref: change.patch
+requirements_ref: requirements.yaml
+contracts_ref: contracts.md
+author_lane: droid
+risk: high
+provenance: synthetic_reconstructed
+sanitization_note: Reconstructed toy contract; no private data.
+workstream_subject: routing-lab
+expected_head_digest: 2bb34ee3d5c1151fb184dfa1195095bf957bbc5faad47461037a900c4b56f1ec
+expected_case_digest: ab3e4149c89540e79c43292c9246530da42230702d1baf4dfcaae63d86ad8fdd

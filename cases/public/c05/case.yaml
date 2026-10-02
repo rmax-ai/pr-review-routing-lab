@@ -1,0 +1,13 @@
+id: c05
+title: Required implementation surface is missing
+base_ref: repo
+patch_ref: change.patch
+requirements_ref: requirements.yaml
+contracts_ref: contracts.md
+author_lane: human
+risk: medium
+provenance: synthetic_reconstructed
+sanitization_note: Reconstructed toy contract; no private data.
+workstream_subject: routing-lab
+expected_head_digest: a8583168fed8224ac33472e75ad2f0ee05d56a59fbb898f24c7b6c517c0f1c20
+expected_case_digest: aa4faab2307f4a7077da2ea5b0f2df1e66fdda8bfc7941ec8b93f84d7f641d4a

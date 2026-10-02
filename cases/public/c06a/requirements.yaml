@@ -1,0 +1,6 @@
+requirements:
+- id: R1
+  text: Defective linked head needs a re-review.
+  source: issue
+  mandatory: true
+  expects_marker: false

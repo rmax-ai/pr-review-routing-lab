@@ -1,0 +1,6 @@
+requirements:
+- id: R1
+  text: Verified evidence still contains an open item.
+  source: issue
+  mandatory: true
+  expects_marker: false

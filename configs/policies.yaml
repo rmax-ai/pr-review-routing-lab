@@ -1,0 +1,8 @@
+policy_version: policy-v1
+thresholds:
+  gate_a.t_mid: 0.45
+  gate_a.t_hi: 0.70
+  gate_b.t_high: 0.70
+gate_a_hard_ids:
+  - touches_authorization_security_or_policy
+  - touches_persistence_schema_or_migration

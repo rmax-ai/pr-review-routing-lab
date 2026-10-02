@@ -1,0 +1,13 @@
+id: c03
+title: Calibration mode changes without a reset marker
+base_ref: repo
+patch_ref: change.patch
+requirements_ref: requirements.yaml
+contracts_ref: contracts.md
+author_lane: droid
+risk: medium
+provenance: synthetic_reconstructed
+sanitization_note: Reconstructed toy contract; no private data.
+workstream_subject: routing-lab
+expected_head_digest: 0fdd1e2e32605be8b48013bf82d791049127df872173433e56a106e58137685d
+expected_case_digest: 2fd6ba5e5441ce5bdb5bdd5508028c5ad66cf25fd9a830905a366fa794d3a528

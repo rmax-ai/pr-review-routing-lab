@@ -1,0 +1,13 @@
+case_id: c03
+expected_findings:
+- severity: material
+  defect_class: lifecycle_calibration
+  requirement_refs:
+  - R1
+  match:
+    requirement_any:
+    - R1
+human_required: false
+verdict_expectation: changes_required
+labeled_by: operator
+notes: Reconstructed public toy case; labels are protocol fixtures.

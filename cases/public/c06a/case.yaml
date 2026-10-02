@@ -1,0 +1,14 @@
+id: c06a
+title: Defective linked head needs a re-review
+base_ref: repo
+patch_ref: change.patch
+requirements_ref: requirements.yaml
+contracts_ref: contracts.md
+author_lane: codex
+risk: medium
+provenance: synthetic_reconstructed
+sanitization_note: Reconstructed toy contract; no private data.
+workstream_subject: routing-lab
+expected_head_digest: 392e4c6dec0e53ea31af242b3b0bd99c61153a9d83f2319a1616373b01e6783e
+linked_case_id: c06b
+expected_case_digest: 3456001adaf4fb851ff8a3f0b2e0e846b992da93818791d07f79c30214ece668

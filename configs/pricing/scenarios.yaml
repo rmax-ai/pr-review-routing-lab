@@ -1,0 +1,5 @@
+scenarios:
+  - {monthly_volume: 100, high_risk_share: "0.10", human_minutes: "20", human_hourly_rate: "120", reviewer_concurrency: 1}
+  - {monthly_volume: 1000, high_risk_share: "0.10", human_minutes: "20", human_hourly_rate: "120", reviewer_concurrency: 4}
+  - {monthly_volume: 10000, high_risk_share: "0.10", human_minutes: "20", human_hourly_rate: "120", reviewer_concurrency: 16}
+  - {monthly_volume: 100000, high_risk_share: "0.10", human_minutes: "20", human_hourly_rate: "120", reviewer_concurrency: 64}

@@ -1,0 +1,11 @@
+id: gate_a
+instructions: "Answer each narrow boolean independently. Thresholds are owned by policy, not by this text."
+questions:
+  - {id: needs_semantic_reasoning_beyond_evidence, type: boolean}
+  - {id: touches_runtime_state_or_lifecycle, type: boolean}
+  - {id: touches_concurrency_or_recovery, type: boolean}
+  - {id: touches_authorization_security_or_policy, type: boolean}
+  - {id: touches_persistence_schema_or_migration, type: boolean}
+  - {id: touches_configuration_or_mode_transitions, type: boolean}
+  - {id: requirements_may_be_missing_from_change, type: boolean}
+  - {id: evidence_insufficient_to_establish_acceptance, type: boolean}

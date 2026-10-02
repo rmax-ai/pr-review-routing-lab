@@ -1,0 +1,13 @@
+id: c04
+title: Retention bound needs an explicit pruning change
+base_ref: repo
+patch_ref: change.patch
+requirements_ref: requirements.yaml
+contracts_ref: contracts.md
+author_lane: codex
+risk: high
+provenance: synthetic_reconstructed
+sanitization_note: Reconstructed toy contract; no private data.
+workstream_subject: routing-lab
+expected_head_digest: 92f6c1c354d7c296f45c49c2365155a20a69b044f62543f56f6a737d51c1eb5b
+expected_case_digest: 5e5f14426705f50fbc50f7a82f4ea675b87dd7c1c6f2b3bd9d90bc7138b170b5

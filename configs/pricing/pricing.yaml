@@ -1,0 +1,7 @@
+entries:
+  - provider: openai
+    model: gpt-6-sol
+    input_usd_per_token: "0.000001"
+    output_usd_per_token: "0.000003"
+    effective_date: "2026-09-28"
+    source: "benchmark assumption; replace with observed invoice"

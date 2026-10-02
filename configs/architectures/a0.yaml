@@ -1,0 +1,5 @@
+id: A0
+name: deterministic gates then human
+steps:
+  - {kind: deterministic_gates}
+  - {kind: human}

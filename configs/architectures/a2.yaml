@@ -1,0 +1,7 @@
+id: A2
+name: deterministic gates, Gate A, conditional Sol, then human
+steps:
+  - {kind: deterministic_gates}
+  - {kind: jev_gate, params: {gate: gate_a}}
+  - {kind: reviewer, params: {conditional: true}}
+  - {kind: human}

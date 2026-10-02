@@ -1,0 +1,6 @@
+diff --git a/src/runtime.py b/src/runtime.py
+--- a/src/runtime.py
++++ b/src/runtime.py
+@@ -1,1 +1,1 @@
+-state = "ready"
++state = "recovering"

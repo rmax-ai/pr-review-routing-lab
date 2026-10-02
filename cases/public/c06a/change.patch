@@ -1,0 +1,6 @@
+diff --git a/src/recovery.py b/src/recovery.py
+--- a/src/recovery.py
++++ b/src/recovery.py
+@@ -1,1 +1,1 @@
+-return True
++return False

@@ -1,0 +1,38 @@
+metrics:
+  - {id: blocker_recall, population: expected_blockers, numerator: matched_blockers, denominator: expected_blockers, source: score, missing_data_rule: NA_at_zero, interpretation: detection}
+  - {id: material_recall_including_blocker, population: expected_material_and_blocker, numerator: matched_material_and_blocker, denominator: expected_material_and_blocker, source: score, missing_data_rule: NA_at_zero, interpretation: detection}
+  - {id: material_recall_only, population: expected_material, numerator: matched_material, denominator: expected_material, source: score, missing_data_rule: NA_at_zero, interpretation: detection}
+  - {id: requirement_coverage_recall, population: cited_expected_requirements, numerator: independently_covered, denominator: cited_expected_requirements, source: score, missing_data_rule: NA_at_zero, interpretation: evidence-backed coverage}
+  - {id: required_but_unmentioned, population: required_requirements, numerator: uncited_requirements, denominator: required_requirements, source: score, missing_data_rule: zero_at_zero, interpretation: omission count}
+  - {id: gate_a_false_safe_rate, population: gate_a_no_sol, numerator: gold_risky_no_sol, denominator: gate_a_no_sol, source: gold, missing_data_rule: NA_at_zero, interpretation: safety}
+  - {id: gate_b_false_no_human_rate, population: gate_b_nonhuman, numerator: gold_human_required_nonhuman, denominator: gate_b_nonhuman, source: gold, missing_data_rule: NA_at_zero, interpretation: safety}
+  - {id: error_rows_skipped, population: run_rows, numerator: error_rows, denominator: run_rows, source: run, missing_data_rule: zero_at_zero, interpretation: excluded error rows}
+  - {id: spurious_blocker_rate, population: produced_findings, numerator: unmatched_blockers, denominator: produced_findings, source: score, missing_data_rule: NA_at_zero, interpretation: blocker overcall}
+  - {id: severity_exactness_rate, population: matched_findings, numerator: exact_severity_matches, denominator: matched_findings, source: score, missing_data_rule: NA_at_zero, interpretation: severity precision}
+  - {id: overcall_rate, population: produced_findings, numerator: unmatched_findings, denominator: produced_findings, source: score, missing_data_rule: NA_at_zero, interpretation: noise}
+  - {id: sol_avoidance_rate, population: eligible_cases, numerator: cases_without_sol, denominator: eligible_cases, source: run, missing_data_rule: NA_at_zero, interpretation: automation}
+  - {id: human_avoidance_rate, population: eligible_cases, numerator: cases_without_human, denominator: eligible_cases, source: run, missing_data_rule: NA_at_zero, interpretation: automation; skips error terminals only}
+  - {id: remediation_eligibility_rate, population: review_cases, numerator: simulated_remediation_routes, denominator: review_cases, source: run, missing_data_rule: NA_at_zero, interpretation: simulated routing}
+  - {id: review_loops, population: linked_fixed_head_rows, numerator: real_re_review_artifacts, denominator: linked_fixed_head_rows, source: artifact, missing_data_rule: NA_at_zero, interpretation: observed replay loops}
+  - {id: review_loops_simulated, population: linked_fixed_head_rows, numerator: simulated_re_review_artifacts, denominator: linked_fixed_head_rows, source: artifact, missing_data_rule: NA_at_zero, interpretation: simulated replay loops}
+  - {id: jev_calls_per_pr, population: cases, numerator: jev_calls, denominator: cases, source: run, missing_data_rule: NA_at_zero, interpretation: usage; skips error terminals only}
+  - {id: sol_calls_per_pr, population: cases, numerator: sol_calls, denominator: cases, source: run, missing_data_rule: NA_at_zero, interpretation: usage}
+  - {id: tokens, population: measured_cases, numerator: input_plus_output_tokens, denominator: measured_cases, source: usage, missing_data_rule: NA_at_zero, interpretation: usage}
+  - {id: tokens_simulated, population: simulated_cases, numerator: input_plus_output_tokens, denominator: simulated_cases, source: usage, missing_data_rule: NA_at_zero, interpretation: simulated usage}
+  - {id: cost_per_pr, population: measured_cases, numerator: total_cost, denominator: measured_cases, source: costing, missing_data_rule: NA_at_zero, interpretation: cost}
+  - {id: cost_per_pr_simulated, population: simulated_cases, numerator: total_cost, denominator: simulated_cases, source: costing, missing_data_rule: NA_at_zero, interpretation: simulated cost}
+  - {id: cost_per_material_finding, population: matched_material_findings, numerator: total_cost, denominator: matched_material_findings, source: costing, missing_data_rule: NA_at_zero, interpretation: cost}
+  - {id: cost_per_blocker, population: matched_blockers, numerator: total_cost, denominator: matched_blockers, source: costing, missing_data_rule: NA_at_zero, interpretation: cost}
+  - {id: latency_p50_overall, population: cases, numerator: p50_latency_ms, denominator: cases, source: observation, missing_data_rule: NA_at_zero, interpretation: latency}
+  - {id: latency_p95_overall, population: cases, numerator: p95_latency_ms, denominator: cases, source: observation, missing_data_rule: NA_at_zero, interpretation: latency}
+  - {id: latency_p50_per_stage, population: stage_observations, numerator: p50_stage_latency_ms, denominator: stage_observations, source: observation, missing_data_rule: NA_at_zero, interpretation: latency}
+  - {id: latency_p95_per_stage, population: stage_observations, numerator: p95_stage_latency_ms, denominator: stage_observations, source: observation, missing_data_rule: NA_at_zero, interpretation: latency}
+  - {id: throughput, population: completed_cases, numerator: cases, denominator: elapsed_wall_time, source: observation, missing_data_rule: NA_at_zero, interpretation: throughput}
+  - {id: blocker_recall_simulated, population: expected_blockers, numerator: matched_blockers, denominator: expected_blockers, source: score, missing_data_rule: NA_at_zero, interpretation: simulated detection}
+  - {id: material_recall_including_blocker_simulated, population: expected_material_and_blocker, numerator: matched_material_and_blocker, denominator: expected_material_and_blocker, source: score, missing_data_rule: NA_at_zero, interpretation: simulated detection}
+  - {id: material_recall_only_simulated, population: expected_material, numerator: matched_material, denominator: expected_material, source: score, missing_data_rule: NA_at_zero, interpretation: simulated detection}
+  - {id: requirement_coverage_recall_simulated, population: cited_expected_requirements, numerator: independently_covered, denominator: cited_expected_requirements, source: score, missing_data_rule: NA_at_zero, interpretation: simulated evidence-backed coverage}
+  - {id: required_but_unmentioned_simulated, population: required_requirements, numerator: uncited_requirements, denominator: required_requirements, source: score, missing_data_rule: zero_at_zero, interpretation: simulated omission count}
+  - {id: spurious_blocker_rate_simulated, population: produced_findings, numerator: unmatched_blockers, denominator: produced_findings, source: score, missing_data_rule: NA_at_zero, interpretation: simulated blocker overcall}
+  - {id: severity_exactness_rate_simulated, population: matched_findings, numerator: exact_severity_matches, denominator: matched_findings, source: score, missing_data_rule: NA_at_zero, interpretation: simulated severity precision}
+  - {id: overcall_rate_simulated, population: produced_findings, numerator: unmatched_findings, denominator: produced_findings, source: score, missing_data_rule: NA_at_zero, interpretation: simulated noise}
